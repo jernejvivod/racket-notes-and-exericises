@@ -1,0 +1,100 @@
+(*
+Another drawback of these two datastructures is their finiteness. This statement might sound surprising
+initially, since any datastructure that we want to represent must be finite for obvious reasons. There are
+applications, however, in which it is more convenient to structure the computation assuming that we
+have one or more infinite datasources, from which we can extract as much data as we need for the
+problem at hand. If we are looking, for example, for the smallest prime number with a particular property,
+we might not know how far in the infinite sequence of ordered prime numbers we need to search to find
+it. In such a situation, it might make sense to conceive of our computation as using a potentially infinite
+datasource that produces prime numbers on demand. A stream is such a datasource.
+
+We stress that "infinite" and "infinity" refer to potential (theoretical) infinity, and not actual infinity. Due to
+the obvious limitations of various resources (time, memory, and others), no computation will produce an
+infinite sequence of values. Our streams are infinite in potential, not in fact.
+
+Before we define the stream datatype, let us think for a minute about how we could specify an infinite
+stream of values. It is immediately clear that we can not actually enumerate these values, so we are left
+with the alternative of providing a method for computing them. This means that our streams must rely on
+an infinity of function calls. This is only possible if (at least some of) the functions involved are directly or
+indirectly recursive. Now, the infinite sequence of function calls can not run to the "end" (there is no end
+of infinity, of course); at any given time, only a finite number of such calls must have been initiated. Thus
+me must have a mechanism for (temporarily) stopping further recursive calls. If we understand how we
+can suspend, and later resume, the sequence of computations that generates the stream values, then
+we can write streams in Racket.
+*)
+
+
+(* Let us now define the simplest stream - an infinite stream that consists of the same repeated value,
+ad infinitum: *)
+
+
+(* ### Examples of using this stream ### *)
+
+(* Define an exception for signaling an empty stream *)
+	
+(* hd: Returns the first element of a stream. *)
+
+
+(* tl: Returns the stream that results after removing the first element. *)
+
+(* map: Applies a function to every element of a stream. *)
+
+(* Returns the ordered list of the first n elements of the stream. *)
+
+(* nth: Return the nth element in the stream. *)
+
+
+(* Filter: Produces a stream of values that satisfy a predicate. *)
+
+(* Creating finite streams *)
+
+(* list_to_stream: Produces a finite stream containing elements of passed list. *)
+
+(* concat: concatenate streams s1 and s2. *)
+
+
+(* nats: Returns a stream that contains natural numbers starting from n *)
+
+(* fib: Returns a stream that contains the Fibonacci sequence starting with a and b *)
+
+(* pows: Return a stream of powers of base to incrementing powers (incrementing by 1). *)
+(* exp is the starting exponent value. *)
+
+(* multiples: Returns a stream of multiples of n *)
+(*
+
+The Sieve of Eratosthenes is possibly the oldest systematic method (algorithm) for generating the
+sequence of all prime numbers. The "sieve" can be described as follows:
+
+step 1: Generate the sequence of natural numbers starting at 2.
+step 2: Position yourself just before the beginning of the sequence.
+step 3: Find the next available number in the sequence. Write it down; it is prime.
+step 4: Cross out (delete) all multiples of the number identified in step 3.
+step 5: Continue with step 3.
+
+*)
+
+(* sieve: implement the Sieve of Eratosthenes. This function expects to be passed a stream of natural numbers starting with 2. *)
+
+(* discard_n: return stream left after removing first n elements. *)
+
+(* zip: take two streams and return stream with terms alternatingly from stream 1 and stream 2. *)
+
+(* zip_n: simiar to above function. The parameter n tells how many elements in a row to take from each stream.*)
+
+(* unzip: take stream and return ordered pair of streams where the first stream contains the odd elements in stream and second stream even elements of stream. *)
+
+(* rle: encode stream using the rle encoding algorithm. Return ordered pair (int * 'a). *)
+(* NOTE: A type with two quotation marks in front of it instead of one is an equality type, which means that the = operator works on it. 
+That also means that you can't call your function on things that are not equality types,  though.*)
+
+(* rle_decode: take a stream of ordered pairs (int * 'a) where the first element is the number of repetitions of element at second position and
+return a stream representing the decoded data (convert each ordered pair to n repetitions of elements and add to stream). *)
+
+(* An explicitly defined stream for testing the rle_decode function. *)
+
+(* fold_n: perform fold on first n elements of list. *)
+
+
+(* fold_stream: perform fold operation on stream and return stream of accumulator values. *)
+

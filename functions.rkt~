@@ -1,0 +1,145 @@
+#! /usr/local/bin/racket
+#lang racket/base
+
+; (define id expr)
+; (define (id args) body ...+)
+
+; The second form is a shorthand for function definitions and is shorthand for
+; (define id (lambda (arg ...) body ...+))
+
+; ### Examples ###
+
+; Define a salutation
+(define salutation (list-ref '("Hi" "Hello") (random 2)))
+
+; Define greeting function (shorthand and lambda)
+(define (greet name) (string-append salutation ", " name))
+(define greet2 (lambda (name) (string-append salutation ", " name "!")))
+
+; Call
+(greet "John")
+(greet2 "Julia")
+
+; A greeting function with two optional arguments and a keyword argument.
+(define (greet3 first [surname "Smith"] #:hi [hi salutation])
+  (string-append hi ", " first " " surname))
+
+(greet3 "John")
+(greet3 "John" "Doe")
+(greet3 "John" #:hi "Hey")
+(greet3 "John" "Doe" #:hi "Hey")
+
+; Same greeting using a lambda function binding.
+(define greet4 (lambda (first [surname "Smith"] #:hi [hi salutation])
+  (string-append hi ", " first " " surname)))
+
+; The function shorthand via define also supports a rest argument (i.e., a final argument to collect extra arguments in a list).
+; (define (id arg ... . rest-id) body ...+)
+; This is a shorthand for:
+; (define id (lambda (arg ... . rest-id) body ...+))
+
+; ### Examples ###
+
+; 'apply' applies proc using the content of (list* v ... lst) as the (by-position) arguments.
+(define (avg . l)
+  (/ (apply + l) (length l)))
+
+
+; Curried function shorthand
+
+(define make-add-suffix
+  (lambda (s2)
+    (lambda (s) (string-append s s2))))
+
+; Example of a call
+((make-add-suffix "!") "hello")
+
+; Using the function shorthand, the same example can be written as:
+(define (make-add-suffix2 s2)
+  (lambda (s) (string-append s s2)))
+
+
+; The define form further supports a shorthand for defining curried functions that reflects nested function calls.
+(define ((make-add-suffix3 s2) s)
+  (string-append s s2))
+
+(define louder (make-add-suffix3 "!"))
+
+
+
+; The full syntax of the function shorthand for define is as follows:
+
+; (define (head args) body ...+)
+; 
+; head	 	=	 	id
+;  	 	|	 	(head args)
+; 
+; args	 	=	 	arg ...
+;  	 	|	 	arg ... . rest-id
+
+
+; The expansion of this shorthand has one nested lambda form for each head in the definition, 
+; where the innermost head corresponds to the outermost lambda.
+
+
+
+; Multiple Values
+
+; Multiple-valued functions can be implemented in terms of the values function,
+; which takes any number of values and returns them as the results.
+(define (split-name name)
+  (let ([parts (regexp-split " " name)])
+    (if (= (length parts) 2)
+        (values (list-ref parts 0) (list-ref parts 1))
+        (error "not a <first> <last> name"))))
+
+(split-name "Julia Smith")
+
+
+; The define-values form binds multiple identifiers at once to 
+; multiple results produced from a single expression.
+
+(define-values (given surname) (split-name "Julia Smith"))
+
+; Internal function definition.
+(define (fac n)
+  (define (aux n [acc 1])
+    (if (= n 0) acc (aux (- n 1) (* n acc)))) 
+  (aux n))
+
+
+; ### Named let ###
+
+
+; A normal let usage can be considered a anonymous procedure call:
+(let ([a 10]
+      [b 20])
+  (+ a b))
+
+
+; Same as
+((lambda (a b)
+   (+ a b)) 10 20)
+
+
+; A named let just binds that procedure to a name in the scope of the procedure
+; Note similarity with internal functions.
+
+; EQUIVALENT DEFINITIONS FOR A CUMULATIVE SUM OF A SIMPLE LIST
+(let sum ([l '(1 2 3)]
+          [acc 0])
+  (if (null? l) acc (sum (rest l) (+ (first l) acc))))
+
+((define (sum [l '(1 2 3)] [acc 0]) 
+   (if (null? l) acc (sum (rest l) (+ (first l) acc)))))
+
+((define sum (lambda ([l '(1 2 3)] [acc 0])
+   (if (null? l) acc (sum (rest l) (+ (first l) acc))))))
+
+; using let-rec
+; Note how the function aux references itself in the body.
+((lambda (l) (letrec ([aux 
+   (lambda (l acc) (if (null? l) acc (aux (rest l) (+ (first l) acc))))]) 
+      (aux l 0))) '(1 2 3))
+
+

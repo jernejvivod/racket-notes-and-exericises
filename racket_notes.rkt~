@@ -1,0 +1,7 @@
+#lang racket
+
+; Racket is a functional programming language.
+; Successor of Scheme
+; Brackets are rougly analogous to HTML tags.
+; Brackets make the tree-structure of a program trivially observable.
+; () and [] are interchangeable (there are conventions).

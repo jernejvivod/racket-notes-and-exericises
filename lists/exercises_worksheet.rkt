@@ -1,0 +1,119 @@
+#lang racket
+
+(define l '(1 2 3 4))
+
+; ----------------- PART 1 -----------------
+
+; 1. Construct a function first which returns the first element in a list of integers
+(define (first l)
+  (car l))
+
+; 2. Construct a function third which returns the third element in a list of integer
+(define (third l)
+  (car (cdr (cdr l))))
+
+; 3. Construct a function last which returns the last element in a list of integers
+(define (last l)
+  (if (null? (cdr l)) (car l) (last (cdr l))))
+
+; 4. Construct a function nth which returns the n-th element in a list of integers
+(define (nth n l)
+  (if (= n 0) (car l) (nth (- n 1) (cdr l))))
+
+; 5. construct a function right which returns the element which is to the right of element el
+(define (right el l)
+  (if (= (car l) el) (car (cdr l)) (right el (cdr l))))
+
+; 6. Construct a function split which splits a list of integers into a list containing the head and the tail as separate lists
+(define (split l)
+  (cons (list (car l)) (list (cdr l))))
+
+; * 7. Construct a function is-sublist which checks if l1 is a sublist of l2.
+(define (is-sublist l1 l2)
+  (define (rest l11 l22) ; Auxiliary function to check if first list at current position on second list matches.
+    (cond [(null? l11) #t]
+          [(= (car l11) (car l22)) (rest (cdr l11) (cdr l22))]
+          [else #f]))
+  (cond [(null? l1) #t]  ; An empty list is a sublist of any list.
+        [(null? l2) #f]  ; If first list is not empty but second is, then it is not a sublist.
+        [(= (car l1) (car l2)) (if (rest (cdr l1) (cdr l2)) #t (is-sublist l1 (cdr l2)))] ; If heads match, check rest.
+        [else (is-sublist l1 (cdr l2))])) ; Slide first list one element forward.
+    
+
+; ----------------- PART 2 -----------------
+
+; 8. Construct a function add-start which adds element el to list l.
+(define (add-start el l)
+  (cons el l)) ; Use cons.
+
+; 9. Construct a function add_end which adds integer el to the end of the list of integers xs
+(define (add-end el l)
+  (if (null? l) (list el) (cons (car l) (add-end el (cdr l)))))
+; more idiomatic:
+(define (add-end2 el l)
+  (append l (list el)))
+
+; 10. Construct a function delete_one which deletes first instance of integer el from the list of integers xs
+
+; 11. Construct a function delete_all which deletes all instances of integer el from the list of integers xs
+
+; 12. Construct a function all_equal which returns true if all integers in the list of integers xs are equal and false otherwise
+
+; ----------------- PART 3 -----------------
+
+; 13. Construct a function is_longer that checks if list of integers xs is longer than list of integers ys
+
+; 14. Construct a function list_length which returns the length of the list of integers xs
+
+; 15. Construct a function expand which returns a list of n integers el
+
+; 16. Construct a function sum_list which returns the sum of all the integers in the list xs
+
+; ----------------- PART 4 -----------------
+
+; * 17. Construct a function reverse_list which reverses the list of integers x
+
+; 18. Construct a function equal which returns true if the lists of integers xs and ys are equal
+
+; * 19. Construct a function is_palindrome which returns true if the list of integers xs is a palindrome
+
+; * 20. Constuct a function num_digits which takes an int and computes the number of constituent digits.
+
+; * 21. Construct a function combine_integers which takes a list of integers and combines the digits into a single integer
+
+;  22. Construct a function is_sorted_asc which returns true if the list of integers xs is sorted in ascending order
+
+; 23. Construct a function is_sorted_desc which returns true if the list of integers xs is sorted in ascending order
+
+; * 24. Construct a function is_prime which returns true if given integer is prime and false otherwise
+
+; * 25. Construct a function all_primes which returns true if all elements of the list of integers xs are primer numbers
+
+; ----------------- PART 5 -----------------
+
+; 26. Construct a function every_second that returns every second element in the list of integers xs
+
+; 27. Construct a function every_nth that returns every nth element in the list of integers xs
+
+; 28. Construct a function intersection which returns a list of elements that are both in list of integers xs and list of integers ys
+
+; Construct a funtion difference which returns a list of integers that are in xs but not also in ys
+
+; Construct a function swap that swaps elements at indices i and j in the list of integers xs
+
+; Construct a function index which returns the index of element el in list
+
+; ----------------- PART 6 -----------------
+
+; Construct a function max which finds the maximum element in an int list
+
+; Connstruct a function min which finds the minimum element in an int list
+
+; Construct a function index_max which returns the index of the largest element in the list of integers xs
+
+; Construct a function index_min which returns the index of the smallest element in the list of integers xs
+
+; Construct a function rle which encodes a list of characters using the run-length encoding algorithm
+
+; Construct a function mat_multiply which takes two matrices represented as lists of lists and returns their matrix product
+
